@@ -157,7 +157,7 @@ git push -u origin main
 
 ## Author
 
-MAYANK PANDEY
+Shubhankar Pandey
 
 ## License
 
