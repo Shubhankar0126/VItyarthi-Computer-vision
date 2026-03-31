@@ -4,8 +4,8 @@
 
 **Course:** Computer Vision  
 **Project Title:** Smart Surveillance with YOLOv8 and DeepSORT  
-**Student:** Mayank Pandey  
-**Repository:** https://github.com/MAYANK479/Smart-Surveillance-Project
+**Student:** Shubhankar Pandey
+**Repository:** https://github.com/Shubhankar0126/VItyarthi-Computer-vision
 
 ## Abstract
 
