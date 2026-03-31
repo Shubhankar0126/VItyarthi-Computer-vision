@@ -1,0 +1,146 @@
+<h1 id="smart-surveillance-with-yolov8-and-deepsort">Smart Surveillance with YOLOv8 and DeepSORT</h1>
+<h2 id="project-report">Project Report</h2>
+<p><strong>Course:</strong> Computer Vision<br />
+<strong>Project Title:</strong> Smart Surveillance with YOLOv8 and DeepSORT<br />
+<strong>Student:</strong> Mayank Pandey<br />
+<strong>Repository:</strong> https://github.com/MAYANK479/Smart-Surveillance-Project</p>
+<h2 id="abstract">Abstract</h2>
+<p>This project presents a real-time smart surveillance system built using modern computer vision techniques. The system detects people in video streams using YOLOv8, tracks them across frames using DeepSORT, estimates scene activity through frame-difference-based motion analysis, and logs crowd statistics for later review. The objective is to demonstrate how object detection and multi-object tracking can be integrated into a practical surveillance workflow that works on webcam input as well as stored video files.</p>
+<p>The project emphasizes a simple but complete end-to-end pipeline rather than large-scale model training. It includes detection, tracking, alert generation, output video creation, logging, visualization of people counts over time, and an optional evaluation utility for labeled prediction files. The final result is a compact academic mini-project that shows a practical application of computer vision for intelligent monitoring.</p>
+<h2 id="introduction">1. Introduction</h2>
+<p>Video surveillance is widely used in public spaces, campuses, offices, transportation systems, and security-sensitive environments. Traditional CCTV systems rely heavily on human operators, which makes continuous monitoring difficult and inefficient. Computer vision can improve this process by automatically detecting and tracking people, estimating crowd density, and highlighting unusual situations for faster response.</p>
+<p>This project focuses on a smart surveillance use case where the system identifies people present in a scene, keeps track of unique individuals using object tracking, and produces simple crowd analytics. The project combines real-time object detection with multi-object tracking so that the system can monitor dynamic scenes more effectively than frame-by-frame detection alone.</p>
+<h2 id="problem-statement">2. Problem Statement</h2>
+<p>Manual surveillance is time-consuming and does not scale well in environments with continuous video feeds. A useful computer vision system should be able to:</p>
+<ul>
+<li>detect people accurately in each frame,</li>
+<li>maintain identities across consecutive frames,</li>
+<li>estimate scene activity,</li>
+<li>raise a basic alert when the visible crowd exceeds a threshold, and</li>
+<li>store output in a form that can be reviewed later.</li>
+</ul>
+<p>This project addresses that need by building an automated surveillance pipeline for person detection and tracking.</p>
+<h2 id="objectives">3. Objectives</h2>
+<p>The main objectives of the project are:</p>
+<ul>
+<li>to detect people in real time from webcam or video input,</li>
+<li>to track multiple people across frames using a tracking-by-detection approach,</li>
+<li>to calculate the current number of visible people and total unique tracked people,</li>
+<li>to estimate motion intensity in the scene,</li>
+<li>to generate an alert when crowd size crosses a configurable threshold,</li>
+<li>to save annotated video and structured logs for later analysis, and</li>
+<li>to provide a clean GitHub-ready academic submission with documentation and reproducible scripts.</li>
+</ul>
+<h2 id="tools-and-technologies-used">4. Tools and Technologies Used</h2>
+<ul>
+<li><strong>Programming Language:</strong> Python</li>
+<li><strong>Computer Vision Library:</strong> OpenCV</li>
+<li><strong>Detection Model:</strong> YOLOv8 from Ultralytics</li>
+<li><strong>Tracking Algorithm:</strong> DeepSORT</li>
+<li><strong>Data Handling:</strong> Pandas</li>
+<li><strong>Visualization:</strong> Matplotlib</li>
+<li><strong>Evaluation Support:</strong> scikit-learn</li>
+<li><strong>Development Format:</strong> Jupyter Notebook and Python scripts</li>
+</ul>
+<h2 id="methodology">5. Methodology</h2>
+<p>The project follows a tracking-by-detection pipeline:</p>
+<ol type="1">
+<li>Video frames are captured from a webcam or a video file.</li>
+<li>Frames are resized for efficient processing.</li>
+<li>YOLOv8 performs person detection at a configurable interval.</li>
+<li>Detected bounding boxes are passed to DeepSORT for identity-aware tracking.</li>
+<li>Confirmed tracks are drawn on the output frame with track IDs.</li>
+<li>Frame-difference analysis is applied to estimate motion level in the scene.</li>
+<li>Crowd statistics are calculated for each frame and written to a CSV-style log file.</li>
+<li>An alert message is displayed when the current number of people exceeds the crowd threshold.</li>
+<li>The annotated video is saved for inspection and the log can later be visualized as a trend plot.</li>
+</ol>
+<figure>
+<img src="assets/workflow-diagram.png" alt="Project workflow" /><figcaption aria-hidden="true">Project workflow</figcaption>
+</figure>
+<h2 id="system-implementation">6. System Implementation</h2>
+<p>The implementation is organized into a few main files:</p>
+<ul>
+<li><code>run_surveillance.py</code> runs the complete surveillance pipeline.</li>
+<li><code>detection.ipynb</code> contains notebook-based experimentation and demonstration.</li>
+<li><code>plot_people_log.py</code> reads the generated log file and plots people-count trends over time.</li>
+<li><code>evaluate_predictions.py</code> computes accuracy, precision, recall, F1-score, and confusion matrix from a labeled CSV file.</li>
+<li><code>README.md</code> and <code>PROJECT_ABSTRACT.md</code> provide project-level documentation.</li>
+</ul>
+<h3 id="person-detection">6.1 Person Detection</h3>
+<p>YOLOv8 is used because it is fast, practical, and widely adopted for real-time object detection tasks. In this project, only detections belonging to the <code>person</code> class are retained. A confidence threshold is used to reduce weak detections.</p>
+<h3 id="multi-object-tracking">6.2 Multi-Object Tracking</h3>
+<p>DeepSORT associates detections across frames and assigns track IDs to maintain identity continuity. This allows the system to estimate both:</p>
+<ul>
+<li>the number of people currently visible in the frame, and</li>
+<li>the total number of unique tracked people observed so far.</li>
+</ul>
+<h3 id="motion-estimation">6.3 Motion Estimation</h3>
+<p>Motion estimation is implemented using frame differencing. Consecutive frames are converted to grayscale, blurred to reduce noise, subtracted to compute difference, thresholded, and processed with morphological closing. The resulting motion score gives a simple estimate of scene activity.</p>
+<h3 id="logging-and-output">6.4 Logging and Output</h3>
+<p>For each processed frame, the system stores:</p>
+<ul>
+<li>frame number,</li>
+<li>current visible people,</li>
+<li>total unique tracked people, and</li>
+<li>motion level.</li>
+</ul>
+<p>The pipeline also writes an annotated output video where detections, IDs, counts, motion level, FPS, and crowd alerts are displayed.</p>
+<h2 id="results-and-output">7. Results and Output</h2>
+<p>The system successfully produces the following outputs:</p>
+<ul>
+<li>an annotated surveillance video (<code>output.avi</code>),</li>
+<li>a structured activity log (<code>log.txt</code>),</li>
+<li>a people-count trend plot generated from the log,</li>
+<li>a notebook workflow for demonstration, and</li>
+<li>an optional evaluation module for labeled prediction data.</li>
+</ul>
+<p>An example annotated frame from the project is shown below.</p>
+<figure>
+<img src="assets/demo-frame-final.png" alt="Annotated output example" /><figcaption aria-hidden="true">Annotated output example</figcaption>
+</figure>
+<p>The project is primarily a functional system demonstration. In its current repository form, a labeled benchmark dataset for quantitative accuracy measurement is not bundled by default. Instead of reporting unsupported or artificial metrics, the repository includes an evaluation script and template CSV so that proper metrics can be computed once labeled predictions are prepared.</p>
+<h2 id="strengths-of-the-project">8. Strengths of the Project</h2>
+<ul>
+<li>Uses a modern deep learning detector suitable for real-time applications.</li>
+<li>Combines detection and tracking in a practical end-to-end workflow.</li>
+<li>Supports both webcam input and stored video input.</li>
+<li>Generates visual as well as numeric outputs for analysis.</li>
+<li>Includes configurable detection interval and crowd threshold.</li>
+<li>Provides reusable scripts instead of only a notebook-based prototype.</li>
+<li>Maintains academic honesty by keeping evaluation optional until labeled data is available.</li>
+</ul>
+<h2 id="limitations">9. Limitations</h2>
+<p>Despite achieving the intended objective, the project has a few limitations:</p>
+<ul>
+<li>It currently focuses only on person detection, not broader activity understanding.</li>
+<li>Crowd alerts are threshold-based and do not model complex abnormal behavior.</li>
+<li>Performance depends on hardware capability and video quality.</li>
+<li>Long-term identity tracking may degrade in cases of severe occlusion or dense crowds.</li>
+<li>Quantitative evaluation depends on availability of labeled ground-truth files.</li>
+</ul>
+<h2 id="future-scope">10. Future Scope</h2>
+<p>The project can be extended in several ways:</p>
+<ul>
+<li>add zone-based intrusion detection,</li>
+<li>detect suspicious or abnormal events,</li>
+<li>support more robust evaluation on annotated datasets,</li>
+<li>export results to dashboards for live monitoring,</li>
+<li>improve tracking in crowded scenes using stronger re-identification features, and</li>
+<li>deploy the system on edge devices for smart campus or smart city use cases.</li>
+</ul>
+<h2 id="conclusion">11. Conclusion</h2>
+<p>This project demonstrates a practical smart surveillance pipeline using YOLOv8, DeepSORT, and OpenCV. It shows how real-time person detection, tracking, crowd counting, motion estimation, and alert generation can be combined into one compact application. The project meets the goals of a computer vision course submission by presenting a working end-to-end system, clear implementation structure, reusable scripts, and documented outputs.</p>
+<p>Overall, the work highlights how computer vision can transform passive CCTV feeds into active, analytics-enabled monitoring systems. With further evaluation and deployment-oriented improvements, the project can be extended into a stronger real-world surveillance solution.</p>
+<h2 id="references">12. References</h2>
+<ol type="1">
+<li>Ultralytics. YOLOv8 Documentation.<br />
+</li>
+<li>Wojke, N., Bewley, A., and Paulus, D. Deep SORT: Deep Cosine Metric Learning for Real-Time Tracking.<br />
+</li>
+<li>OpenCV Documentation.<br />
+</li>
+<li>Pedregosa, F. et al. Scikit-learn: Machine Learning in Python.<br />
+</li>
+<li>McKinney, W. Data Structures for Statistical Computing in Python.</li>
+</ol>
